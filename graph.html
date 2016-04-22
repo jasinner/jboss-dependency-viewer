@@ -1,0 +1,170 @@
+<html>
+<head>
+<style type="text/css">
+  #container {
+    max-width: 2000px;
+    height: 500px;
+    margin: auto;
+  }
+</style> 
+</head>
+<body>
+<script>
+function parseSecond(val) {
+    var result = "Not passed",
+        tmp = [];
+    var items = window.location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+    }
+    return result;
+}
+  var product=parseSecond("prod");
+  var what=parseSecond("what");
+
+  var extcol=parseSecond("ec");
+  var rootcol=parseSecond("rc");
+  var modcol=parseSecond("mc");
+  if (extcol == "Not passed") { extcol='#FF0000';} 
+  if (rootcol == "Not passed") { rootcol='#00FF00';}
+  if (modcol == "Not passed") { modcol='#0000FF';}
+
+  if (what == "module") {
+   structloc="./JSON/" + product + '/modules/' + parseSecond("mod_" + product) + '.json';
+   document.write("Module: " + parseSecond("mod_" + product));
+  } else {
+   structloc="./JSON/" + product + '/libraries/' + parseSecond("lib_" + product) + '.json';
+   document.write("Library: " + parseSecond("lib_" + product));
+  }
+</script><br>
+Product version: <script>document.write(parseSecond("prod"));</script><br>
+<!--Container  -->
+<div id="container"></div>
+
+<script src="./framework/sigma/build/sigma.min.js"></script>
+<script src="./framework/sigma/build/plugins/sigma.parsers.json.min.js"></script>
+<script src="./framework/sigma/build/plugins/sigma.layout.forceAtlas2.min.js"></script>
+<script>
+// Add a method to the graph model that returns an
+  // object with every neighbors of a node inside:
+  sigma.classes.graph.addMethod('neighbors', function(nodeId) {
+    var k,
+        neighbors = {},
+        index = this.allNeighborsIndex[nodeId] || {};
+    for (k in index)
+      neighbors[k] = this.nodesIndex[k];
+    return neighbors;
+  });
+
+  sigma.parsers.json(structloc, {
+    container: 'container',
+    type: 'canvas',
+    settings: {
+      defaultNodeColor: '#0000FF',
+      defaultEdgeColor: '#BBBBBB',
+      edgeColor: 'default',
+      labelThreshold: '0',
+      sideMargin: 1,
+      maxEdgeSize: 2,
+      maxNodeSize: 5,
+      doubleClickEnabled: false,
+      touchInertiaDuration: 0,
+      dragTimeout: 0
+    }
+  },
+
+ // highlighting immediate neighbours function
+ function(s) {
+      // colouring graph according to properties in JSON
+      s.graph.nodes().forEach(function(n) {
+        if (n.property == "root")
+          n.color = rootcol;
+        else if (n.property == "extension")
+          n.color = extcol;
+         else
+          n.color = modcol;
+         });
+
+      // We first need to save the original colors of our
+      // nodes and edges, like this:
+      s.graph.nodes().forEach(function(n) {
+        n.originalColor = n.color;
+      });
+      s.graph.edges().forEach(function(e) {
+        e.originalColor = e.color;
+      });
+
+      // When a node is clicked, we check for each node
+      // if it is a neighbor of the clicked one. If not,
+      // we set its color as grey, and else, it takes its
+      // original color.
+      // We do the same for the edges, and we only keep
+      // edges that have both extremities colored.
+      s.bind('clickNode', function(e) {
+        var nodeId = e.data.node.id,
+            toKeep = s.graph.neighbors(nodeId);
+        toKeep[nodeId] = e.data.node;
+
+        s.graph.nodes().forEach(function(n) {
+          if (toKeep[n.id])
+            n.color = n.originalColor;
+          else
+            n.color = '#eee';
+        });
+
+        s.graph.edges().forEach(function(e) {
+          if (toKeep[e.source] && toKeep[e.target])
+            e.color = e.originalColor;
+          else
+            e.color = '#eee';
+        });
+
+        // Since the data has been modified, we need to
+        // call the refresh method to make the colors
+        // update effective.
+        s.refresh();
+      });
+
+      // When the stage is clicked, we just color each
+      // node and edge with its original color.
+      s.bind('clickStage', function(e) {
+        s.graph.nodes().forEach(function(n) {
+          n.color = n.originalColor;
+        });
+
+        s.graph.edges().forEach(function(e) {
+          e.color = e.originalColor;
+        });
+
+        // Same as in the previous event:
+        s.refresh();
+
+      });
+
+      s.bind('doubleClickStage', function(e) {
+         s.stopForceAtlas2();     
+      });
+
+    // Starting force-directed layout
+        s.startForceAtlas2();         
+    });
+</script>
+<br>
+<b>Double-click stage to stop.</b><br>
+Hover over node to see label. <br>
+Click node to see immediate neighbours. <br>
+Use mouse wheel to zoom in and out. <br>
+Use the mouse to move the graph relative to the canvas. <br> 
+<br>
+Arrow points from dependent module to the module it depends on.<br> 
+Circular dependencies are not shown. Only the shortest connection between any module and module of interest is shown. <br>
+<br>
+Colours:<br>
+<script>
+document.write("<span style=\"color: " + rootcol + "\">Module of interest</span><br>");
+document.write("<span style=\"color: " + modcol + "\">Ordinary modules depending on module of interest</span><br>");
+document.write("<span style=\"color: " + extcol + "\">Extensions</span><br><br>");
+document.write("<a href=\"./" + structloc + "\">JSON file for graph structure data<a>");
+</script></body>
+</html>

@@ -1,0 +1,22 @@
+ <br> 
+    <input type="submit" value="Submit">
+    <input type="reset" value="Reset">
+  </fieldset>
+</form> 
+<script>
+function getRadioCheckedValue(radio_name){
+  var oRadio = document.forms[0].elements[radio_name];
+   for(var i = 0; i < oRadio.length; i++) {
+      if(oRadio[i].checked) {
+         return oRadio[i].value;
+      }
+   }
+   return '';
+}
+var interest=document.getElementById(getRadioCheckedValue("what")+ "_" + document.getElementById('prod').value + "_div");
+//document.write(getRadioCheckedValue("what")+ "_" + document.getElementById('product').value + "_div");
+interest.className = '';
+
+</script>
+</body>
+</html>

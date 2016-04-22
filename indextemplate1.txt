@@ -1,0 +1,21 @@
+<html>
+<head>
+<style type="text/css">
+.hidden{
+    display: none;
+}
+</style>
+</head>
+<body>
+ <form id="form1" action="graph.html" >
+  <fieldset>
+    <legend>Enter parameters:</legend>
+
+    Product:<br>
+    <select id="prod" name="prod"  onchange="window.location.reload()">
+       %productoptions%
+    </select>
+    <br>
+
+    <input type="radio" name="what" value="library" onClick="window.location.reload()"> Library<br>
+    <input type="radio" name="what" value="module" onClick="window.location.reload()"> Module<br>
