@@ -13,10 +13,32 @@ function getRadioCheckedValue(radio_name){
    }
    return '';
 }
-var interest=document.getElementById(getRadioCheckedValue("what")+ "_" + document.getElementById('prod').value + "_div");
-//document.write(getRadioCheckedValue("what")+ "_" + document.getElementById('product').value + "_div");
-interest.className = '';
+window.onbeforeunload = function(event) {
+if (typeof(Storage) !== "undefined") {
+    // Store
+    localStorage.setItem('lastname', "Smith");
+    localStorage.setItem('prod', document.getElementById("prod").selectedIndex);
+    localStorage.setItem('what', getRadioCheckedValue("what"));
+} else {
+    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+};
 
+};
+
+window.onload = function() {
+if (typeof(Storage) !== "undefined") {
+    // Retrieve
+    document.getElementById("prod").selectedIndex = localStorage.getItem('prod');
+    radiobtn = document.getElementById(localStorage.getItem('what'));
+    radiobtn.checked = true;
+} else {
+//    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+};
+
+var interest=localStorage.getItem('what')+ "_" + document.getElementById('prod').options[localStorage.getItem('prod')].value + "_div";
+//document.write(interest + "<br>");
+document.getElementById(interest).className = '';
 </script>
 </body>
 </html>

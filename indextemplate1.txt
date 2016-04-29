@@ -13,9 +13,9 @@
 
     Product:<br>
     <select id="prod" name="prod"  onchange="window.location.reload()">
-       %productoptions%
+       <option value="EAP6">EAP6</option> <option value="EAP7">EAP7</option>
     </select>
     <br>
 
-    <input type="radio" name="what" value="library" onClick="window.location.reload()"> Library<br>
-    <input type="radio" name="what" value="module" onClick="window.location.reload()"> Module<br>
+    <input type="radio" name="what" id="library" value="library" onClick="window.location.reload()"> Library<br>
+    <input type="radio" name="what" id="module" value="module" onClick="window.location.reload()"> Module<br>
