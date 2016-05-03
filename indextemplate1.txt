@@ -13,7 +13,7 @@
 
     Product:<br>
     <select id="prod" name="prod"  onchange="window.location.reload()">
-       <option value="EAP6">EAP6</option> <option value="EAP7">EAP7</option>
+       %productoptions%
     </select>
     <br>
 

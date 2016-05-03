@@ -17,29 +17,50 @@ jsonpath=$frontendpath/JSON
 
  
 if [ -z "$1" ] || [ $1 == '-h' ] ; then
-  echo "usage: $0 distro_name distro_path -p/-g/-a
--p - prepare system data only (to upload to server minimal info)
--g - generate JSON files
--a = -p + -g
-if the product exists, it will be ";
+echo "usage: 
+
+to add product:
+$0 product_name download_address
+
+to delete:
+$0 product_name
+if the product exists, it will be overwritten";
   exit;
 fi
 
-if [ $3 == '-p' ] || [ $3 == '-a' ]; then
+#if add
+
+if [ "$#" == 2 ]; then
+# download and unzip distro
+
+if [[ $2 == *".zip" ]]; then
+  #download and unzip
+  mkdir -p $systemdata/downloads/ 2> /dev/null;
+  echo "Downloading $2 with wget";
+  wget -O $systemdata/downloads/$1.zip $2;
+  mkdir -p $systemdata/unzips/$1 2> /dev/null;
+  unzip -d $systemdata/unzips/$1/ $systemdata/downloads/$1.zip 1> /dev/null;
+  productpath=$systemdata/unzips/$1;
+  echo $productpath;
+else 
+  productpath=$2;
+fi
+
+echo "$1   - >   $2" >> $frontendpath/history.txt;
+
 #collecting module.xml files
 rm -r $analysispath/$1 2> /dev/null;
 mkdir -p $analysispath/$1 2> /dev/null;
-substitute=$(find $2 -name module.xml | grep org | awk -F 'org' '{print $1}' | head -1)
+substitute=$(find $productpath -name module.xml | grep org | awk -F 'org' '{print $1}' | head -1)
 echo "Modules are in the folder: $substitute";
-for i in $(find $2 -name module.xml);  do
+for i in $(find $productpath -name module.xml);  do
    cp $i $analysispath/$1/$(echo $i | sed "s#^$substitute##g" | sed "s/\//./g");
 done
 
 #collecting all extensions
-for i in $(find $2 | grep configuration | grep xml); do (grep extension $i); done | sort -u > $analysispath/$1/extensions;
-fi
+for i in $(find $productpath | grep configuration | grep xml); do (grep extension $i); done | sort -u > $analysispath/$1/extensions;
 
-if [ $3 == '-g' ] || [ $3 == '-a' ]; then
+
 rm -r $jsonpath/$1 2> /dev/null;
 #generating JSON files
 all=$(ls $analysispath/$1 | grep -v extensions | grep -v temp* | grep -v dependencies% | sed "s/\.main\.module.xml$//g" | sed "s/\.eap\.module.xml$//g" | sed 's/\.module.xml$//g' | sort -u | wc -l);
@@ -51,6 +72,18 @@ for i in $(ls $analysispath/$1 | grep -v extensions | grep -v temp* | grep -v de
   j=$(($j+1))
 done
 
+#if delete
+
+elif [ "$#" -eq 1 ]; then
+ rm -r -v $jsonpath/$1;
+ rm -r $analysispath/$1;
+ rm -r $systemdata/unzips/$1;
+else
+ echo "Incorrect arguments"
+ exit;
+fi
+
+#update html
 
 distro_list=$(for i in `ls $jsonpath`; do echo "<option value=\"$i\">$i</option>"; done)
 
@@ -84,9 +117,4 @@ cat $toolpath/indextemplate2.txt >> $indexfile
 cat $toolpath/graph.html > $graphfile
 
 rm temp_list 2> /dev/null
-
-fi
-
-
-
 

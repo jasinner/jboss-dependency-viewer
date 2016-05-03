@@ -1,0 +1,2 @@
+EAP7-Alpha   - >   http://download-cache.eng.bos.redhat.com/released/JBEAP-7/7.0.0-Alpha/jboss-eap-7.0.0.Alpha.zip
+EAP7-Alpha   - >   http://download-cache.eng.bos.redhat.com/released/JBEAP-7/7.0.0-Alpha/jboss-eap-7.0.0.Alpha.zip
