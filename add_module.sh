@@ -1,18 +1,18 @@
 #!/bin/bash
 
+#loading configuration file for frontend path
 source visualcatalogue.cfg
 
-
 rootpath=$(cd ..; pwd)
-
+toolpath=$(pwd)
 #where sigma.js distro is unpacked
-sigmapath=$frontendpath/framework/sigma
+#sigmapath=$frontendpath/framework/sigma
 #path to JSON files
 jsonpath=$frontendpath/JSON
 #where the system keeps temporary data
 systemdata=$rootpath/systemdata
-toolpath=$(pwd)
 
+#removing temporary files from previous modules
 rm $systemdata/nodes 2> /dev/null
 rm $systemdata/edges 2> /dev/null
 rm $distdatapath/dependencies* 2> /dev/null
@@ -21,9 +21,8 @@ rm $distdatapath/temp_allmodules 2> /dev/null
 
 if [ $1 == '-l' ] 2> /dev/null; then
   library=$2;
-  distdatapath=$systemdata/analysis/$3;
   #find module name for the library
-  module=$(grep -B1000 $library $distdatapath/*.xml | grep xmlns | tail -n 1 | cut -d \" -f 4);
+  module=$(grep -B1000 $library $systemdata/analysis/$3/*.xml | grep xmlns | tail -n 1 | cut -d \" -f 4);
 elif [ $1 == '-m' ] 2> /dev/null; then
   distdatapath=$systemdata/analysis/$3;
   module=$2;
@@ -54,11 +53,12 @@ echo $module > $distdatapath/temp_allmodules;
   echo "    {
       \"id\": \"$module\",
       \"label\": \"$module\",
+      \"order\": 0,
       \"x\": 150,
       \"y\": 0,
       \"size\": 2,
       \"property\": \"root\",
-      \"weight\": 1000
+      \"weight\": 100
     }," >> $systemdata/nodes;
 
 #finding all nodes
@@ -68,23 +68,21 @@ cd $distdatapath
 
 for order in $(ls dependencies* 2> /dev/null | cut -d % -f 3 | sort -u); do
   sameraw=$(cat dependencies*${order} | wc -l);
- # ordercolour=$((${order}*40 + (${order} / 8) *16384));
   count=1;
   for i in $(ls dependencies*${order}); do
     for j in $(cat $i); do
       extension=false;
       if echo $j | grep -q E$; then extension=true; fi
       j=$(echo $j | sed "s/E$//");     
-    #  if grep -q \"$j\" nodes; then  -  check if node already present in nodes
       echo "    {
       \"id\": \"$j\",
       \"label\": \"$j\",
+      \"order\": $order,
       \"x\": $(($(echo 300 / $sameraw)*$count)),
       \"y\": $(($order*10 + $count*3))," >> $systemdata/nodes;
       if [ $extension == "true" ]; then
       echo "      \"property\": \"extension\"," >> $systemdata/nodes; 
       else 
-  #    echo "      \"color\": \"#$(printf "%06x\n" $ordercolour)\"," >> $systemdata/nodes; 
       echo "      \"property\": \"ordinary\"," >> $systemdata/nodes; 
       fi;
       echo "      \"size\": 2,
