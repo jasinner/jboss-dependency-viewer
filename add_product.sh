@@ -98,6 +98,7 @@ else
 fi
 
 #update html
+mkdir -p $jsonpath 2> /dev/null;
 distro_list=$(for i in `ls $jsonpath`; do echo "<option value=\"$i\">$i</option>"; done)
 
 #write the first template to first page

@@ -1,8 +1,10 @@
 FROM registry.access.redhat.com/rhel7
 MAINTAINER jshepher@redhat.com
-ADD add_dependency.sh add_module.sh add_product.sh /opt/rh/
-ADD indextemplate*.txt /opt/rh/
-ADD graph.html /opt/rh/
-ADD visualcatalogue.cfg /opt/rh/
+ENV FRONTEND_PATH /opt/rh/httpd24/root/var/www/html 
+RUN yum -y update && yum -y install wget unzip
 WORKDIR /opt/rh/
-ENTRYPOINT ["add_product.sh"] 
+ADD add_dependency.sh add_module.sh add_product.sh ./
+ADD indextemplate*.txt ./
+ADD graph.html ./
+ADD shared.js ./
+ENTRYPOINT ["/opt/rh/add_product.sh"] 
