@@ -8,7 +8,6 @@ rootpath=$(cd ..; pwd)
 systemdata=$rootpath/systemdata
 analysispath=$systemdata/analysis
 indexfile=$frontendpath/index.html
-graphfile=$frontendpath/graph.html
 jsonpath=$frontendpath/JSON
 
  
@@ -60,6 +59,20 @@ for i in $(find $productpath | grep configuration | grep xml); do (grep extensio
 #removing existing JSON files for this short name
 rm -r $jsonpath/$1 2> /dev/null;
 
+#generating start of HTML binding each module to its libraries
+#passing product short name and module name
+echo "<html>
+<head>
+<title>JBoss Dependency Viewer </title>
+<style type=\"text/css\">
+.hidden{
+    display: none;
+}
+</style>
+<script src=\"shared.js\"></script>
+</head>
+<body>" > $frontendpath/liblist.html
+
 #generating JSON files
 #xml names sometimes include slot number after module name. Slots are called "eap" or numbers. Passing module names with slots.
 #number of all modules
@@ -81,14 +94,13 @@ elif [ "$#" -eq 1 ]; then
  cat $frontendpath/history.txt | grep -v " $1   - >   " > $systemdata/tmp;
  cat $systemdata/tmp > $frontendpath/history.txt;
  rm $systemdata/tmp;
- exit;
+# exit;
 else
  echo "Incorrect arguments"
  exit;
 fi
 
 #update html
-
 distro_list=$(for i in `ls $jsonpath`; do echo "<option value=\"$i\">$i</option>"; done)
 
 #write the first template to first page
@@ -118,16 +130,27 @@ done
 echo "</datalist> </div>" >> temp_list;
 
 cat temp_list >> $indexfile;
+
+#copy to correspondent page list of corresponding libraries for module
+cat $analysispath/$j/libmod.tmp >> $frontendpath/liblist.html
 done
+
+#generating end of HTML binding each module to its libraries
+echo "<script>
+var product=parseSecond('product');
+var module=parseSecond('module');
+document.getElementById(product + \" \" + module).className = '';
+</script>
+</body>" >> $frontendpath/liblist.html
 
 rm temp_list 2> /dev/null
 
 #write the second template to first page
 cat $toolpath/indextemplate2.txt >> $indexfile
 
-#second(graph) page is ready and is just overwritten
-cat $toolpath/graph.html > $graphfile
-
+#presentation files that are ready and just overwritten
+cat $toolpath/graph.html > $frontendpath/graph.html
+cat $toolpath/shared.js > $frontendpath/shared.js
 
 rm -r $systemdata/downloads/$1.zip 2> /dev/null;
 rm -r $systemdata/unzips/$1 2> /dev/null;

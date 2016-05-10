@@ -40,6 +40,6 @@ var interest=localStorage.getItem('what')+ "_" + document.getElementById('prod')
 //document.write(interest + "<br>");
 document.getElementById(interest).className = '';
 </script>
-<a href="./history.txt"> Product download locations</a>
+<a href="./history.txt"> Product download paths</a>
 </body>
 </html>

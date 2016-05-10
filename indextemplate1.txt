@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
+<title>JBoss Dependency Viewer </title>
 <style type="text/css">
 .hidden{
     display: none;
@@ -7,6 +9,7 @@
 </style>
 </head>
 <body>
+<h1> JBoss Dependency Viewer </h1>
  <form id="form1" action="graph.html" >
   <fieldset>
     <legend>Enter parameters:</legend>

@@ -15,8 +15,6 @@ systemdata=$rootpath/systemdata
 #removing temporary files from previous modules
 rm $systemdata/nodes 2> /dev/null
 rm $systemdata/edges 2> /dev/null
-rm $distdatapath/dependencies* 2> /dev/null
-rm $distdatapath/temp_allmodules 2> /dev/null
 
 
 if [ $1 == '-l' ] 2> /dev/null; then
@@ -26,6 +24,8 @@ if [ $1 == '-l' ] 2> /dev/null; then
 elif [ $1 == '-m' ] 2> /dev/null; then
   distdatapath=$systemdata/analysis/$3;
   module=$2;
+  rm $distdatapath/dependencies* 2> /dev/null
+  rm $distdatapath/temp_allmodules 2> /dev/null
 else
     echo "Generates JSON files of dependencies for modules/libraries
 usage: $0 -l/-m libname distro_name [-b]
@@ -104,13 +104,23 @@ if [ $4 == '-b' ] 2> /dev/null; then
 mkdir -p $jsonpath/$3 2> /dev/null;
 mkdir -p $jsonpath/$3/modules/ 2> /dev/null;
 mkdir -p $jsonpath/$3/libraries/ 2> /dev/null;
+#all these JSON files, for module and library, will have the same graph
 graphdatafiles=""
 graphdatafiles="$jsonpath/$3/modules/$module.json";
+#for html with library lists
+touch $distdatapath/libmod.tmp;
+echo "<div id=\"$3 $module\" class=\"hidden\">" >> $distdatapath/libmod.tmp;
+echo "Libraries in module <b>$module</b> in \"$3\": <br>" >> $distdatapath/libmod.tmp;
  for i in main eap 1.0 1.1 1.2 1.3 2.0 2.1 2.2 2.3 2.4 3.0 3.1 3.2 3.3 3.4 4.0 4.1 4.2 4.3 4.4 5.0 5.1 5.2 5.3 1 2 3 4 5; do 
    for j in `grep jar ${module}.$i.module.xml 2> /dev/null | cut -d \" -f 2 | grep '\.jar$'`; do
      graphdatafiles="$graphdatafiles $jsonpath/$3/libraries/$j.json";   
+#for html with library lists
+     echo "$j <br>" >> $distdatapath/libmod.tmp;
    done;
  done
+#for html with library lists
+echo "</div>" >> $distdatapath/libmod.tmp;
+
 #else - accommodation for not -b
 #main html page and graph data JSON file names
 #graphdatafile=$frontendpath/data.json
