@@ -1,14 +1,11 @@
 #!/bin/bash
 
-#loading configuration file for frontend path
-source visualcatalogue.cfg
-
 rootpath=$(cd ..; pwd)
 toolpath=$(pwd)
 #where sigma.js distro is unpacked
-#sigmapath=$frontendpath/framework/sigma
+#sigmapath=$FRONTEND_PATH/framework/sigma
 #path to JSON files
-jsonpath=$frontendpath/JSON
+jsonpath=$FRONTEND_PATH/JSON
 #where the system keeps temporary data
 systemdata=$rootpath/systemdata
 
@@ -123,8 +120,8 @@ echo "</div>" >> $distdatapath/libmod.tmp;
 
 #else - accommodation for not -b
 #main html page and graph data JSON file names
-#graphdatafile=$frontendpath/data.json
-#pagefile=$frontendpath/page.html
+#graphdatafile=$FRONTEND_PATH/data.json
+#pagefile=$FRONTEND_PATH/page.html
 #cat $toolpath/indextemplate.txt | sed "s#%sigmapath%#$sigmapath#" > $pagefile
 fi
 

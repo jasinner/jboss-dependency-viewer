@@ -1,14 +1,11 @@
 #!/bin/bash
 
-#loading configuration file for frontend path
-source visualcatalogue.cfg
-
 toolpath=$(pwd)
 rootpath=$(cd ..; pwd)
 systemdata=$rootpath/systemdata
 analysispath=$systemdata/analysis
-indexfile=$frontendpath/index.html
-jsonpath=$frontendpath/JSON
+indexfile=$FRONTEND_PATH/index.html
+jsonpath=$FRONTEND_PATH/JSON
 
  
 if [ -z "$1" ] || [ $1 == '-h' ] ; then
@@ -42,7 +39,7 @@ else
 fi
 
 #record the download path to file linked from the first page
-echo " $1   - >   $2" >> $frontendpath/history.txt;
+echo " $1   - >   $2" >> $FRONTEND_PATH/history.txt;
 
 #collecting module.xml files
 rm -r $analysispath/$1 2> /dev/null;
@@ -71,7 +68,7 @@ echo "<html>
 </style>
 <script src=\"shared.js\"></script>
 </head>
-<body>" > $frontendpath/liblist.html
+<body>" > $FRONTEND_PATH/liblist.html
 
 #generating JSON files
 #xml names sometimes include slot number after module name. Slots are called "eap" or numbers. Passing module names with slots.
@@ -91,8 +88,8 @@ elif [ "$#" -eq 1 ]; then
  rm -r -v $jsonpath/$1;
  rm -r $analysispath/$1 2> /dev/null;
  #clean up history.txt
- cat $frontendpath/history.txt | grep -v " $1   - >   " > $systemdata/tmp;
- cat $systemdata/tmp > $frontendpath/history.txt;
+ cat $FRONTEND_PATH/history.txt | grep -v " $1   - >   " > $systemdata/tmp;
+ cat $systemdata/tmp > $FRONTEND_PATH/history.txt;
  rm $systemdata/tmp;
 # exit;
 else
@@ -132,7 +129,7 @@ echo "</datalist> </div>" >> temp_list;
 cat temp_list >> $indexfile;
 
 #copy to correspondent page list of corresponding libraries for module
-cat $analysispath/$j/libmod.tmp >> $frontendpath/liblist.html
+cat $analysispath/$j/libmod.tmp >> $FRONTEND_PATH/liblist.html
 done
 
 #generating end of HTML binding each module to its libraries
@@ -141,7 +138,7 @@ var product=parseSecond('product');
 var module=parseSecond('module');
 document.getElementById(product + \" \" + module).className = '';
 </script>
-</body>" >> $frontendpath/liblist.html
+</body>" >> $FRONTEND_PATH/liblist.html
 
 rm temp_list 2> /dev/null
 
@@ -149,8 +146,8 @@ rm temp_list 2> /dev/null
 cat $toolpath/indextemplate2.txt >> $indexfile
 
 #presentation files that are ready and just overwritten
-cat $toolpath/graph.html > $frontendpath/graph.html
-cat $toolpath/shared.js > $frontendpath/shared.js
+cat $toolpath/graph.html > $FRONTEND_PATH/graph.html
+cat $toolpath/shared.js > $FRONTEND_PATH/shared.js
 
 rm -r $systemdata/downloads/$1.zip 2> /dev/null;
 rm -r $systemdata/unzips/$1 2> /dev/null;
