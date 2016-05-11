@@ -1,12 +1,12 @@
 ## How to Run in Docker
 
-- Run a HTTPD container called 'dependency-viewer', eg.
+- Use the Dockerfile in the 'install' directory to create a HTTPD image with the Sigma JS Framework installed
 
-  docker run -d -P --name dependency-viewer registry.access.redhat.com/rhscl/httpd-24-rhel7
+   docker build -t dependency-viewer install/
 
-- Copy the Sigma Framework into the 'dependency-viewer' container:
+- Run the dependency-viewer image, exposing it's HTTPD ports to the host
 
-  docker cp framework/ dependency-viewer:/opt/rh/httpd24/root/var/www/html/
+   docker run -d -P --name dependency-viewer dependency-viewer
 
 - Use the provided Dockerfile to create an image called 'dependency-viewer-builder' which adds new products
 
