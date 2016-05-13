@@ -1,19 +1,23 @@
 kind: "BuildConfig"
 apiVersion: "v1"
 metadata:
-  name: "dependency-viewer" 
+  name: "dependency-viewer"
 spec:
- source: 
+ triggers:
+    type: "Github"
+    github:
+        secret: "prodsec"
+ source:
     type: "Git"
     git:
       uri: "git://github.com/jasinner/jboss-dependency-viewer.git"
-  strategy: 
+  strategy:
     type: "Source"
     sourceStrategy:
       from:
         kind: "ImageStreamTag"
         name: "php-55-centos7:latest"
-  output: 
+  output:
     to:
       kind: "ImageStreamTag"
       name: "dependency-viewer:latest"
