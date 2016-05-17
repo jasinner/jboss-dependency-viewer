@@ -1,15 +1,9 @@
 #!/bin/bash
-
-toolpath=$(pwd)
-rootpath=$(cd ..; pwd)
-systemdata=$rootpath/systemdata
-analysispath=$systemdata/analysis
-indexfile=$FRONTEND_PATH/index.html
-jsonpath=$FRONTEND_PATH/JSON
-
  
 if [ -z "$1" ] || [ $1 == '-h' ] ; then
 echo "usage: 
+
+export \$FRONTEND_PATH environment variable
 
 to add product:
 $0 product_name download_address
@@ -20,6 +14,13 @@ $0 product_name
 if the product exists, it will be overwritten";
   exit;
 fi
+
+toolpath=$(pwd)
+rootpath=$(cd ..; pwd)
+systemdata=$rootpath/systemdata
+analysispath=$systemdata/analysis
+indexfile=$FRONTEND_PATH/index.html
+jsonpath=$FRONTEND_PATH/JSON
 
 #add product - two arguments
 if [ "$#" == 2 ]; then
