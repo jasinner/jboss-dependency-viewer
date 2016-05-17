@@ -2,9 +2,9 @@
 
 - Use the Dockerfile in the 'install' directory to create a HTTPD image with the Sigma JS Framework installed
 
-   docker build -t dependency-viewer install/
+   `docker build -t dependency-viewer install/`
 
-- Run the dependency-viewer image, exposing it's HTTPD ports to the host
+- Run the dependency-viewer image, exposing its HTTPD ports to the host
 
    docker run -d -P --name dependency-viewer dependency-viewer
 
