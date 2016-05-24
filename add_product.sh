@@ -7,6 +7,7 @@ export \$FRONTEND_PATH environment variable
 
 to add product:
 $0 product_name download_address
+Choose arbitrary product name (don't use blanks and avoid underscores)
 
 to delete:
 $0 product_name 
@@ -59,7 +60,8 @@ rm -r $jsonpath/$1 2> /dev/null;
 
 #generating start of HTML binding each module to its libraries
 #passing product short name and module name
-echo "<html>
+echo "<!DOCTYPE html>
+<html>
 <head>
 <title>JBoss Dependency Viewer </title>
 <style type=\"text/css\">
@@ -138,7 +140,7 @@ done
 echo "<script>
 var product=parseSecond('product');
 var module=parseSecond('module');
-document.getElementById(product + \" \" + module).className = '';
+document.getElementById(product + \"_\" + module).className = '';
 </script>
 </body>" >> $FRONTEND_PATH/liblist.html
 
