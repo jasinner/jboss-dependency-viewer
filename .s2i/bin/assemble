@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+cp -Rf /tmp/src/. ./
+
+echo "hello" > hello.txt
+
+fix-permissions ./

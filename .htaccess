@@ -1,0 +1,4 @@
+<FilesMatch "\.sh$">
+Order allow,deny
+Deny from all
+</FilesMatch>
