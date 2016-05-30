@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -z "$1" ] || [ $1 == '-h' ] ; then
   echo "This script is to be called by other script.";
   exit;
