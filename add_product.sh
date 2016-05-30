@@ -14,6 +14,7 @@ if the product exists, it will be overwritten";
   exit;
 fi
 
+
 export FRONTEND_PATH=$3
 toolpath=$(pwd)
 rootpath=$(cd ..; pwd)
@@ -21,6 +22,7 @@ systemdata=$rootpath/systemdata
 analysispath=$systemdata/analysis
 indexfile=$FRONTEND_PATH/index.html
 jsonpath=$FRONTEND_PATH/JSON
+
 
 #add product - 3 arguments
 if [ "$#" == 3 ]; then
