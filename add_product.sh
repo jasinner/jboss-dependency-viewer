@@ -1,12 +1,10 @@
 #!/bin/bash
- 
-if [ -z "$1" ] || [ $1 == '-h' ] ; then
-echo "usage: 
 
-export \$FRONTEND_PATH environment variable
+if [ -z "$1" ] || [ $1 == '-h' ] || [ -z "$2" ] || [ -z "$3" ]; then
+echo "usage:
 
 to add product:
-$0 product_name download_address
+$0 product_name download_address frontend_path
 Choose arbitrary product name (don't use blanks and avoid underscores)
 
 to delete:
@@ -16,6 +14,7 @@ if the product exists, it will be overwritten";
   exit;
 fi
 
+export FRONTEND_PATH=$3
 toolpath=$(pwd)
 rootpath=$(cd ..; pwd)
 systemdata=$rootpath/systemdata
@@ -23,8 +22,8 @@ analysispath=$systemdata/analysis
 indexfile=$FRONTEND_PATH/index.html
 jsonpath=$FRONTEND_PATH/JSON
 
-#add product - two arguments
-if [ "$#" == 2 ]; then
+#add product - 3 arguments
+if [ "$#" == 3 ]; then
 
 if [[ $2 == *".zip" ]]; then
   #download and unzip
@@ -87,7 +86,7 @@ for i in $(ls $analysispath/$1 | grep -v extensions | grep -v temp* | grep -v de
 done
 
 #if delete - one argument
-elif [ "$#" -eq 1 ]; then
+elif [ "$#" -eq 3 ]; then
  rm -r -v $jsonpath/$1;
  rm -r $analysispath/$1 2> /dev/null;
  #clean up history.txt
