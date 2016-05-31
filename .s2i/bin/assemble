@@ -5,5 +5,6 @@ set -e
 cp -Rf /tmp/src/. ./
 
 sh add_product.sh WF10 http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip .
+sh add_product.sh EAP7 https://www.jboss.org/download-manager/file/jboss-eap-7.0.0.zip .
 
 fix-permissions ./
