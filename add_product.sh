@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 if [ -z "$1" ] || [ $1 == '-h' ] || [ -z "$2" ] || [ -z "$3" ]; then
 echo "usage:
 
@@ -8,7 +10,7 @@ $0 product_name download_address frontend_path
 Choose arbitrary product name (don't use blanks and avoid underscores)
 
 to delete:
-$0 product_name 
+$0 product_name
 (also '*' acceptable for all)
 if the product exists, it will be overwritten";
   exit;
@@ -36,7 +38,7 @@ if [[ $2 == *".zip" ]]; then
   unzip -d $systemdata/unzips/$1/ $systemdata/downloads/$1.zip 1> /dev/null;
   productpath=$systemdata/unzips/$1;
   echo $productpath;
-else 
+else
   #if it is not a zip file, should be a folder with the product already unzipped
   productpath=$2;
 fi
@@ -117,7 +119,7 @@ echo "<div id=\"module_${j}_div\" class=\"hidden\">
     <input list=\"module_${j}_list\" name=\"mod_${j}\">
     <datalist  id=\"module_${j}_list\">" > temp_list;
 for i in `ls $jsonpath/$j/modules | sed "s/\.json$//g"`; do
- echo "<option value=\"$i\">" >> temp_list; 
+ echo "<option value=\"$i\">" >> temp_list;
 done
 echo "</datalist> </div>" >> temp_list;
 
@@ -127,7 +129,7 @@ echo "<div id=\"library_${j}_div\" class=\"hidden\">
     <input list=\"library_${j}_list\" name=\"lib_${j}\">
     <datalist id=\"library_${j}_list\">" >> temp_list;
 for i in `ls $jsonpath/$j/libraries | sed "s/\.json$//g"`; do
- echo "<option value=\"$i\">" >> temp_list; 
+ echo "<option value=\"$i\">" >> temp_list;
 done
 echo "</datalist> </div>" >> temp_list;
 
