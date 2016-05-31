@@ -4,6 +4,6 @@ set -e
 
 cp -Rf /tmp/src/. ./
 
-echo "hello" > hello.txt
+sh add_product.sh WF10 http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip .
 
 fix-permissions ./
