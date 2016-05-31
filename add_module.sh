@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 rootpath=$(cd ..; pwd)
 toolpath=$(pwd)
 #where sigma.js distro is unpacked
