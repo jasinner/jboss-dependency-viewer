@@ -56,8 +56,6 @@ else
   productpath=$path2;
 fi
 
-echo $productpath;
-
 #record the download path to file linked from the first page
 echo " $prod1   - >   $path2" >> $FRONTEND_PATH/history.txt;
 
