@@ -13,7 +13,6 @@ to delete:
 $0 -p frontend_path product_name OR
 export FRONTEND_PATH=your html path AND
 $0 product_name  
-(also '*' acceptable for all)
 if the product exists, it will be overwritten";
   exit;
 fi
@@ -109,7 +108,7 @@ done
 #**DELETE PRODUCT**
 #
 elif [ "$#" == 3 ] || [ "$#" == 1 ]; then 
- if [ ! -d "$analysispath/$prod1" ]; then
+ if [ ! -d "$analysispath/$prod1" ] && [ "$prod1" != '*' ]; then
    echo "Product $prod1 does not exist";
    exit;
  fi
