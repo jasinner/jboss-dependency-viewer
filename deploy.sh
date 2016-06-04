@@ -12,6 +12,6 @@ DOCUMENT_ROOT=/opt/rh/httpd24/root/var/www/html
 docker run -Pd --name jboss-dependency-viewer registry.access.redhat.com/rhscl/httpd-24-rhel7 
 docker cp framework jboss-dependency-viewer:$DOCUMENT_ROOT
 mkdir /tmp/frontend_path
-sh add_product.sh $1 $2 /tmp/frontend_path
+sh add_product.sh -p /tmp/frontend_path $1 $2 
 docker cp /tmp/frontend_path/. jboss-dependency-viewer:$DOCUMENT_ROOT
 

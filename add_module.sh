@@ -110,10 +110,10 @@ graphdatafiles="$jsonpath/$3/modules/$module.json";
 touch $distdatapath/libmod.tmp;
 echo "<div id=\"$3_$module\" class=\"hidden\">" >> $distdatapath/libmod.tmp;
 echo "Libraries in module <b>$module</b> in \"$3\": <br>" >> $distdatapath/libmod.tmp;
- for i in main eap 1.0 1.1 1.2 1.3 2.0 2.1 2.2 2.3 2.4 3.0 3.1 3.2 3.3 3.4 4.0 4.1 4.2 4.3 4.4 5.0 5.1 5.2 5.3 1 2 3 4 5; do
-   for j in `grep jar ${module}.$i.module.xml 2> /dev/null | cut -d \" -f 2 | grep '\.jar$'`; do
+ for i in '' main. eap. 1.0. 1.1. 1.2. 1.3. 2.0. 2.1. 2.2. 2.3. 2.4. 3.0. 3.1. 3.2. 3.3. 3.4. 4.0. 4.1. 4.2. 4.3. 4.4. 5.0. 5.1. 5.2. 5.3. 1. 2. 3. 4. 5.; do
+   for j in `grep jar ${module}.${i}module.xml 2> /dev/null | cut -d \" -f 2 | grep '\.jar$'`; do
      graphdatafiles="$graphdatafiles $jsonpath/$3/libraries/$j.json";
-#for html with library lists
+     #for html with library lists
      echo "$j <br>" >> $distdatapath/libmod.tmp;
    done;
  done
