@@ -5,13 +5,13 @@ echo "usage:
 
 to add product:
 $0 -p frontend_path product_name download_address OR
-export FRONTEND_PATH=your html path AND
+export FRONTEND_PATH=your/html/path AND
 $0 product_name download_address
 Choose arbitrary product name (don't use blanks and avoid underscores)
 
 to delete:
 $0 -p frontend_path product_name OR
-export FRONTEND_PATH=your html path AND
+export FRONTEND_PATH=your/html/path AND
 $0 product_name  
 if the product exists, it will be overwritten";
   exit;
