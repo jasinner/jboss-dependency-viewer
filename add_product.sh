@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 if [ -z "$1" ] || [ $1 == '-h' ]; then
 echo "usage:
 
@@ -12,6 +13,7 @@ Choose arbitrary product name (don't use blanks and avoid underscores)
 to delete:
 $0 product_name
 (also '*' acceptable for all)
+
 if the product exists, it will be overwritten";
   exit;
 fi
@@ -104,7 +106,7 @@ done
 #
 #**DELETE PRODUCT**
 #
-elif [ "$#" == 3 ] || [ "$#" == 1 ]; then 
+elif [ "$#" == 3 ] || [ "$#" == 1 ]; then
  if [ ! -d "$analysispath/$prod1" ] && [ "$prod1" != '*' ]; then
    echo "Product $prod1 does not exist";
    exit;
