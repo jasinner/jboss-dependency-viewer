@@ -22,7 +22,7 @@ To remove a version, execute the same script with product short name as a parame
 
 ## How to Run in Docker
 
-	./deploy.sh EAP6 http://download.bne.redhat.com/released/JBEAP-6/6.4.8/jboss-eap-6.4.8-full-build.zip
+	./deploy.sh WILDFLY101 http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip
 
  - Creates a Docker container with the name 'jboss-dependency-viewer'. 
  - The container uses a Docker volume 

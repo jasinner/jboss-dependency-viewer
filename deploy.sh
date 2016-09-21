@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 if [ -z $1 ] || [ -z $2 ] ; then
 	echo 'Usage deploy.sh <PRODUCT_ALIAS> <DOWNLOAD_URL>'
 	exit 1

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 if [ -z "$1" ] || [ $1 == '-h' ] || [ -z "$2" ] || [ -z "$3" ]; then
 echo "usage:
 
