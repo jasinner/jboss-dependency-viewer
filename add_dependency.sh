@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 if [ -z "$1" ] || [ $1 == '-h' ] ; then
   echo "This script is to be called by other script.";
   exit;
@@ -14,7 +12,7 @@ depfile=dependencies%$1%$2;
 
 #separate slot name on the end, if any
 name=$(echo $1 | sed 's/\..$//g' | sed 's/\..$//g');
-#slot 
+#slot
 slot=$(echo $1 | sed "s/${name}.//g")
 grepstring="<module name=\"$name\"";
 if [ "$name" != "$slot" ]; then
@@ -22,7 +20,7 @@ if [ "$name" != "$slot" ]; then
 fi
 #echo $grepstring
 
-sort -u temp_allmodules > temp_allmodules1; cat temp_allmodules1 > temp_allmodules; rm temp_allmodules1 
+sort -u temp_allmodules > temp_allmodules1; cat temp_allmodules1 > temp_allmodules; rm temp_allmodules1
   allmodules=$(cat temp_allmodules);
 
 #finding 1st order dependencies for the module of current iteration
@@ -35,15 +33,15 @@ if [ "$newslot" != "" ]; then
   newfull="${newmodule}.${newslot}"
 fi
 
-#breaking out of circular dependencies  
+#breaking out of circular dependencies
   breakfl=0;
   for j in $allmodules; do
-    if [ $newfull == $j ]; then 
-      breakfl=1; 
-    fi 
+    if [ $newfull == $j ]; then
+      breakfl=1;
+    fi
   done;
-  if [ $breakfl == 1 ]; then 
-    break 
+  if [ $breakfl == 1 ]; then
+    break
   fi
 
   echo $newfull >> temp_allmodules;
@@ -60,4 +58,3 @@ if [ -s $depfile ]; then
   ./add_dependency.sh $i $(($2+1)) $3 $4;
   done
 fi
-

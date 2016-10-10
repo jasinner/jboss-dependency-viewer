@@ -1,9 +1,16 @@
 #!/bin/bash
 
-set -e
-
 cp -Rf /tmp/src/. ./
 
-sh add_product.sh -p /tmp/frontend_path EAP7 https://www.jboss.org/download-manager/file/jboss-eap-7.0.0.zip .
+frontend_path=/tmp/frontend_path
+mkdir $frontend_path
+sh add_product.sh -p $frontend_path EAP7 $JBOSS_HOME/modules/system/layers/base/
 
-fix-permissions ./ -R
+cp -R framework $frontend_path
+
+mkdir $frontend_path/WEB-INF
+cp jboss-web.xml $frontend_path/WEB-INF/
+jar cvf root.war -C $frontend_path .
+cp root.war $JBOSS_HOME/standalone/deployments
+
+exit 0

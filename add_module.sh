@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rootpath=$(cd ..; pwd)
+rootpath=/tmp
 toolpath=$(pwd)
 #where sigma.js distro is unpacked
 #sigmapath=$FRONTEND_PATH/framework/sigma
@@ -12,7 +12,6 @@ systemdata=$rootpath/systemdata
 #removing temporary files from previous modules
 rm $systemdata/nodes 2> /dev/null
 rm $systemdata/edges 2> /dev/null
-
 
 if [ $1 == '-l' ] 2> /dev/null; then
   library=$2;
@@ -59,8 +58,7 @@ echo $module > $distdatapath/temp_allmodules;
     }," >> $systemdata/nodes;
 
 #finding all nodes
-
-./add_dependency.sh $module 1 $distdatapath $toolpath;
+sh add_dependency.sh $module 1 $distdatapath $toolpath;
 cd $distdatapath
 
 for order in $(ls dependencies* 2> /dev/null | cut -d % -f 3 | sort -u); do

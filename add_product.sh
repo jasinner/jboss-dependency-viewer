@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 
 if [ -z "$1" ] || [ $1 == '-h' ]; then
 echo "usage:
@@ -32,11 +33,14 @@ else
     path2=$4;
 fi
 toolpath=$(pwd)
-rootpath=$(cd ..; pwd)
+rootpath=/tmp
 systemdata=$rootpath/systemdata
 analysispath=$systemdata/analysis
 indexfile=$FRONTEND_PATH/index.html
 jsonpath=$FRONTEND_PATH/JSON
+
+mkdir -p $analysispath
+mkdir $jsonpath
 
 #
 #**ADD PRODUCT**
@@ -63,10 +67,11 @@ echo " $prod1   - >   $path2" >> $FRONTEND_PATH/history.txt;
 #collecting module.xml files
 rm -r $analysispath/$prod1 2> /dev/null;
 mkdir -p $analysispath/$prod1 2> /dev/null;
-substitute=$(find $productpath -name module.xml | grep org | awk -F 'org' '{print $1}' | head -1)
+substitute=$(find $productpath -name base -type d | head -1)
 echo "Modules are in the folder: $substitute";
 for i in $(find $productpath -name module.xml);  do
-   cp $i $analysispath/$prod1/$(echo $i | sed "s#^$substitute##g" | sed "s/\//./g");
+   target=$analysispath/$prod1/$(echo $i | sed "s#^$substitute/##g" | sed "s/\//./g");
+   cp $i $target;
 done
 
 #collecting information about extensions in all configurations
@@ -93,13 +98,14 @@ echo "<!DOCTYPE html>
 #generating JSON files
 #xml names sometimes include slot number after module name. Slots are called "eap" or numbers. Passing module names with slots.
 #number of all modules
+
 all=$(ls $analysispath/$prod1 | grep -v extensions | grep -v temp* | grep -v dependencies% | sed "s/\.main\.module.xml$//g" | sed "s/\.eap\.module.xml$//g" | sed 's/\.module.xml$//g' | sort -u | wc -l);
 j=1;
 #for each of the modules
 for i in $(ls $analysispath/$prod1 | grep -v extensions | grep -v temp* | grep -v dependencies% | sed "s/\.main\.module.xml$//g" | sed "s/\.eap\.module.xml$//g" | sed 's/\.module.xml$//g' |  sort -u); do
   echo "$j/$all";
   #calling next script for module
-  ./add_module.sh -m $i $prod1 -b; # 1> /dev/null;
+  sh add_module.sh -m $i $prod1 -b; # 1> /dev/null;
   j=$(($j+1))
 done
 
@@ -126,7 +132,6 @@ fi
 #
 #**COMMON PART**
 #
-
 #update html
 mkdir -p $jsonpath 2> /dev/null;
 distro_list=$(for i in `ls $jsonpath`; do echo "<option value=\"$i\">$i</option>"; done)
@@ -179,6 +184,11 @@ cat $toolpath/indextemplate2.txt >> $indexfile
 #presentation files that are ready and just overwritten
 cat $toolpath/graph.html > $FRONTEND_PATH/graph.html
 cat $toolpath/shared.js > $FRONTEND_PATH/shared.js
+
+rm -rf $FRONTEND_PATH/*.sh
+rm -rf $FRONTEND_PATH/indextemplate*.txt
+rm -rf $FRONTEND_PATH/*.md
+rm -rf $FRONTEND_PATH/LICENCE
 
 rm -r $systemdata/downloads/$prod1.zip 2> /dev/null;
 rm -r $systemdata/unzips/$prod1 2> /dev/null;

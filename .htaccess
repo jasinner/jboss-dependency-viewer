@@ -1,4 +1,2 @@
-<FilesMatch "\.sh$">
-Order allow,deny
-Deny from all
-</FilesMatch>
+Options -ExecCGI
+AddHandler cgi-script .sh
